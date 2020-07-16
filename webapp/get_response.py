@@ -1,27 +1,32 @@
 import os
 
+from pprint import pprint
+
 from googleapiclient.discovery import build
 
-api_key = 'SECRET_KEY'
+key = 'SECTRET_KEY'
 
-youtube = build('youtube', 'v3', developerKey=api_key)
+youtube = build('youtube', 'v3', developerKey=key)
 
-request = youtube.playlistItems().list(
+request_1 = youtube.playlistItems().list(
         part='snippet',
         playlistId="PLv_zOGKKxVph51u_AIswuXCasZ7aZD8t3",
-        maxResults='79'
+        maxResults='50'
 )
 
-# request1 = youtube.channels().list(
-#         part='statistics',
-#         forUsername='moscowdjangoru'  
-#     )
+request_2 = youtube.playlistItems().list(
+        part='snippet',
+        playlistId="PLv_zOGKKxVph51u_AIswuXCasZ7aZD8t3",
+        maxResults='50',
+        pageToken='CDIQAA'
+)
 
-response = request.execute()
+response_1 = request_1.execute()
 
-# response1 = request1.execute()
+for items in response_1['items']:    
+    pprint(items['snippet']['title'])
 
-for items in response['items']:    
-    print(items['snippet']['title'])
+response_2 = request_2.execute()
 
-# print(response)
+for items in response_2['items']:    
+    pprint(items['snippet']['title'])
